@@ -1,0 +1,105 @@
+package cs2110;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+public class EvaluatorTest {
+
+    @DisplayName("WHEN we evaluate an expression containing only a single digit, THEN that digit "
+            + "is returned.")
+    @Test
+    public void testDigit() {
+        assertEquals(0, ExpressionEvaluator.evaluate("0"));
+        assertEquals(1, ExpressionEvaluator.evaluate("1"));
+        assertEquals(5, ExpressionEvaluator.evaluate("5"));
+    }
+
+    @DisplayName("WHEN we evaluate an expression containing only a single digit within "
+            + "parentheses, THEN that digit is returned.")
+    @Test
+    public void testParenthesizedDigit() {
+        assertEquals(0, ExpressionEvaluator.evaluate("(0)"));
+        assertEquals(2, ExpressionEvaluator.evaluate("(2)"));
+        assertEquals(4, ExpressionEvaluator.evaluate("((4))"));
+    }
+
+    @DisplayName("WHEN we evaluate an expression containing one addition operation applied to two "
+            + "single-digit operands, THEN the correct result is returned.")
+    @Test
+    public void testOneAddition() {
+        assertEquals(3, ExpressionEvaluator.evaluate("1+2"));
+        assertEquals(11, ExpressionEvaluator.evaluate("4+7"));
+        assertEquals(9, ExpressionEvaluator.evaluate("9+0"));
+    }
+    @DisplayName("WHEN we evaluate an expression containing one multiplication operation applied to "
+            + "two single-digit operands, THEN the correct result is returned.")
+    @Test
+    public void testOneMultiplication() {
+        assertEquals(2, ExpressionEvaluator.evaluate("1*2"));
+        assertEquals(28, ExpressionEvaluator.evaluate("4*7"));
+        assertEquals(0, ExpressionEvaluator.evaluate("9*0"));
+    }
+
+    @DisplayName("WHEN we evaluate an expression containing one addition operation applied to two "
+            + "single-digit operands with additional parentheses, THEN the correct result is "
+            + "returned.")
+    @Test
+    public void testOneOperatorParentheses() {
+        assertEquals(3, ExpressionEvaluator.evaluate("(1+2)"));
+        assertEquals(3, ExpressionEvaluator.evaluate("(1)+2"));
+        assertEquals(3, ExpressionEvaluator.evaluate("1+(2)"));
+        assertEquals(3, ExpressionEvaluator.evaluate("(1)+(2)"));
+        assertEquals(3, ExpressionEvaluator.evaluate("((1)+2)"));
+        assertEquals(3, ExpressionEvaluator.evaluate("(1+(2))"));
+        assertEquals(3, ExpressionEvaluator.evaluate("((1)+(2))"));
+    }
+
+    @DisplayName("WHEN an expression contains multiple of the same operator, THEN "
+            + "it is correctly evaluated")
+    @Test
+    public void testOneOperatorMultipleTimes() {
+        assertEquals(6, ExpressionEvaluator.evaluate("1+2+3"));
+        assertEquals(21, ExpressionEvaluator.evaluate("4+8+9"));
+        assertEquals(28, ExpressionEvaluator.evaluate("1+2+3+4+5+6+7"));
+        assertEquals(84, ExpressionEvaluator.evaluate("4*7*3"));
+        assertEquals(180, ExpressionEvaluator.evaluate("5*6*2*3"));
+    }
+
+    @DisplayName("WHEN an expression contains both addition and multiplication but no "
+            + "parentheses, THEN the order of operations is respected.")
+    @Test
+    public void testBothOperators() {
+        assertEquals(7, ExpressionEvaluator.evaluate("1+2*3"));
+        assertEquals(5, ExpressionEvaluator.evaluate("1*2+3"));
+        assertEquals(15, ExpressionEvaluator.evaluate("1+2+3*4"));
+        assertEquals(11, ExpressionEvaluator.evaluate("1+2*3+4"));
+        assertEquals(14, ExpressionEvaluator.evaluate("1*2+3*4"));
+        assertEquals(25, ExpressionEvaluator.evaluate("1+2*3*4"));
+        assertEquals(10, ExpressionEvaluator.evaluate("1*2*3+4"));
+    }
+
+    @DisplayName("WHEN an expression contains both addition and multiplication and "
+            + "non-nested parentheses, THEN the order of operations is respected.")
+    @Test
+    public void testBothOperatorsParentheses() {
+        assertEquals(14, ExpressionEvaluator.evaluate("2+(3*4)"));
+        assertEquals(20, ExpressionEvaluator.evaluate("(2+3)*4"));
+        assertEquals(10, ExpressionEvaluator.evaluate("(2*3)+4"));
+        assertEquals(14, ExpressionEvaluator.evaluate("2*(3+4)"));
+        assertEquals(45, ExpressionEvaluator.evaluate("(2+3)*(4+5)"));
+        assertEquals(70, ExpressionEvaluator.evaluate("2*(3+4)*5"));
+    }
+
+    @DisplayName("WHEN an expression contains both addition and multiplication and "
+            + "nested parentheses, THEN the order of operations is respected.")
+    @Test
+    public void testBothOperatorsNestedParentheses() {
+        assertEquals(94, ExpressionEvaluator.evaluate("2*(3+4*(5+6))"));
+    }
+
+    // TODO: Add unit testing for all of the features that you add to the ExpressionEvaluator
+    //  over the course of the assignment. Be sure that your tests have descriptive method names
+    //  and @DisplayNames. Your tests will be evaluated for their correctness and coverage.
+}
