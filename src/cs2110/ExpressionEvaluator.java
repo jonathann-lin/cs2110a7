@@ -8,7 +8,7 @@ public class ExpressionEvaluator {
 
     /**
      * Evaluates the given well-formed mathematical expression `expr` and returns its value.
-     * Currently, the `evaluate()` method supports: - Single-digit int literals - Addition -
+     * Currently, the `evaluate()` method supports: - Multi-digit int literals - Addition -
      * Multiplication - Parentheses
      */
     public static int evaluate(String expr) {
