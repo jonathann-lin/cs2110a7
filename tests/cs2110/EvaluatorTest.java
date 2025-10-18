@@ -99,6 +99,41 @@ public class EvaluatorTest {
         assertEquals(94, ExpressionEvaluator.evaluate("2*(3+4*(5+6))"));
     }
 
+    @DisplayName("WHEN an expression contains multi-digit integers, THEN the "
+            + "expression is evaluated correctly")
+    @Test
+
+    public void testMultiDigitEvaluation(){
+        //Basic operations
+        assertEquals(31 , ExpressionEvaluator.evaluate("26+5"));
+        assertEquals(31 , ExpressionEvaluator.evaluate("5+26"));
+        assertEquals(76 , ExpressionEvaluator.evaluate("21+55"));
+        assertEquals(65 , ExpressionEvaluator.evaluate("13*5"));
+        assertEquals(76 , ExpressionEvaluator.evaluate("4*19"));
+        assertEquals(120 , ExpressionEvaluator.evaluate("12*10"));
+
+
+        //With parentheses
+        assertEquals(14, ExpressionEvaluator.evaluate("2+(3*4)"));
+        assertEquals(20, ExpressionEvaluator.evaluate("(2+3)*4"));
+        assertEquals(10, ExpressionEvaluator.evaluate("(2*3)+4"));
+        assertEquals(14, ExpressionEvaluator.evaluate("2*(3+4)"));
+        assertEquals(45, ExpressionEvaluator.evaluate("(2+3)*(4+5)"));
+        assertEquals(70, ExpressionEvaluator.evaluate("2*(3+4)*5"));
+        assertEquals(160, ExpressionEvaluator.evaluate("(8+24)*(4+1)"));
+        assertEquals(210, ExpressionEvaluator.evaluate("2*((10+5)*7)"));
+        assertEquals(123, ExpressionEvaluator.evaluate("100+(23)"));
+        assertEquals(144, ExpressionEvaluator.evaluate("(12*11)+(12)"));
+        assertEquals(99, ExpressionEvaluator.evaluate("(50+49)"));
+        assertEquals(225, ExpressionEvaluator.evaluate("(15*15)"));
+        assertEquals(240, ExpressionEvaluator.evaluate("(12+8)*(10+2)"));
+        assertEquals(72, ExpressionEvaluator.evaluate("(6*6)+(6*6)"));
+        assertEquals(194346, ExpressionEvaluator.evaluate("(166+(19*56)+(26*6))+((5*2*41+525)+5*5)*201"));
+
+    }
+
+
+
     // TODO: Add unit testing for all of the features that you add to the ExpressionEvaluator
     //  over the course of the assignment. Be sure that your tests have descriptive method names
     //  and @DisplayNames. Your tests will be evaluated for their correctness and coverage.

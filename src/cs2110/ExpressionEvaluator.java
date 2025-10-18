@@ -1,27 +1,28 @@
 package cs2110;
+
 import java.util.Scanner;
 
 public class ExpressionEvaluator {
 
-     // TODO: Update these specs as you build out the functionality of the `evaluate()` method.
+    // TODO: Update these specs as you build out the functionality of the `evaluate()` method.
+
     /**
      * Evaluates the given well-formed mathematical expression `expr` and returns its value.
-     * Currently, the `evaluate()` method supports:
-     * - Single-digit int literals
-     * - Addition
-     * - Multiplication
-     * - Parentheses
+     * Currently, the `evaluate()` method supports: - Single-digit int literals - Addition -
+     * Multiplication - Parentheses
      */
     public static int evaluate(String expr) {
         Stack<Integer> operands = new LinkedStack<>();
         Stack<Character> operators = new LinkedStack<>(); // invariant: contains only '(', '+', and '*'
 
         boolean expectingOperator = false; // in infix notation, the first operand comes before an operator
+        boolean canContinueNumber = false; //records whether there is a previous number that can be extended to multiple digits
 
-            for (char c : expr.toCharArray()) { // arrays are Iterable, so can be used in enhanced-for loops
+        for (char c : expr.toCharArray()) { // arrays are Iterable, so can be used in enhanced-for loops
             if (c == '(') {
                 assert !expectingOperator : "'(' cannot follow an operand";
                 operators.push('(');
+                canContinueNumber = false;
             } else if (c == '*') {
                 assert expectingOperator : "'*' must follow an operand, not an operator";
                 while (!operators.isEmpty() && operators.peek() == '*') {
@@ -29,6 +30,7 @@ public class ExpressionEvaluator {
                 }
                 operators.push('*');
                 expectingOperator = false;
+                canContinueNumber = false;
             } else if (c == '+') {
                 assert expectingOperator : "'+' must follow an operand, not an operator";
                 while (!operators.isEmpty() && (operators.peek() == '*'
@@ -37,6 +39,7 @@ public class ExpressionEvaluator {
                 }
                 operators.push('+');
                 expectingOperator = false;
+                canContinueNumber = false;
             } else if (c == ')') {
                 assert expectingOperator : "')' must follow an operand, not an operator";
                 assert !operators.isEmpty() : "mismatched parentheses, extra ')'";
@@ -45,11 +48,19 @@ public class ExpressionEvaluator {
                     assert !operators.isEmpty() : "mismatched parentheses, extra ')'";
                 }
                 operators.pop(); // remove '('
+                canContinueNumber = false;
             } else { // c is a digit
                 assert c >= '0' && c <= '9' : "expression contains an illegal character";
-                assert !expectingOperator : "digits cannot follow an operand, our evaluator only supports single-digit inputs";
-                operands.push(c - '0'); // convert c to an int and auto-box
+                assert !expectingOperator
+                        || canContinueNumber : "Can not be expecting an operator, (expecting operand) unless we are continuing from a previous number";
+                if (canContinueNumber) { //extending from previous number
+                    int prev = operands.pop();
+                    operands.push(prev * 10 + (c - '0'));
+                } else { //starting new number
+                    operands.push(c - '0'); // convert c to an int and auto-box
+                }
                 expectingOperator = true;
+                canContinueNumber = true;
             }
         }
 
