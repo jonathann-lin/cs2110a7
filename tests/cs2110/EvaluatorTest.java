@@ -10,7 +10,7 @@ public class EvaluatorTest {
     @DisplayName("WHEN we evaluate an expression containing only a single digit, THEN that digit "
             + "is returned.")
     @Test
-    public void testDigit() {
+    public void testDigit() throws MalformedExpressionException{
         assertEquals(0, ExpressionEvaluator.evaluate("0"));
         assertEquals(1, ExpressionEvaluator.evaluate("1"));
         assertEquals(5, ExpressionEvaluator.evaluate("5"));
@@ -19,7 +19,7 @@ public class EvaluatorTest {
     @DisplayName("WHEN we evaluate an expression containing only a single digit within "
             + "parentheses, THEN that digit is returned.")
     @Test
-    public void testParenthesizedDigit() {
+    public void testParenthesizedDigit() throws MalformedExpressionException{
         assertEquals(0, ExpressionEvaluator.evaluate("(0)"));
         assertEquals(2, ExpressionEvaluator.evaluate("(2)"));
         assertEquals(4, ExpressionEvaluator.evaluate("((4))"));
@@ -28,7 +28,7 @@ public class EvaluatorTest {
     @DisplayName("WHEN we evaluate an expression containing one addition operation applied to two "
             + "single-digit operands, THEN the correct result is returned.")
     @Test
-    public void testOneAddition() {
+    public void testOneAddition() throws MalformedExpressionException{
         assertEquals(3, ExpressionEvaluator.evaluate("1+2"));
         assertEquals(11, ExpressionEvaluator.evaluate("4+7"));
         assertEquals(9, ExpressionEvaluator.evaluate("9+0"));
@@ -36,7 +36,7 @@ public class EvaluatorTest {
     @DisplayName("WHEN we evaluate an expression containing one multiplication operation applied to "
             + "two single-digit operands, THEN the correct result is returned.")
     @Test
-    public void testOneMultiplication() {
+    public void testOneMultiplication() throws MalformedExpressionException{
         assertEquals(2, ExpressionEvaluator.evaluate("1*2"));
         assertEquals(28, ExpressionEvaluator.evaluate("4*7"));
         assertEquals(0, ExpressionEvaluator.evaluate("9*0"));
@@ -46,7 +46,7 @@ public class EvaluatorTest {
             + "single-digit operands with additional parentheses, THEN the correct result is "
             + "returned.")
     @Test
-    public void testOneOperatorParentheses() {
+    public void testOneOperatorParentheses() throws MalformedExpressionException{
         assertEquals(3, ExpressionEvaluator.evaluate("(1+2)"));
         assertEquals(3, ExpressionEvaluator.evaluate("(1)+2"));
         assertEquals(3, ExpressionEvaluator.evaluate("1+(2)"));
@@ -59,7 +59,7 @@ public class EvaluatorTest {
     @DisplayName("WHEN an expression contains multiple of the same operator, THEN "
             + "it is correctly evaluated")
     @Test
-    public void testOneOperatorMultipleTimes() {
+    public void testOneOperatorMultipleTimes() throws MalformedExpressionException{
         assertEquals(6, ExpressionEvaluator.evaluate("1+2+3"));
         assertEquals(21, ExpressionEvaluator.evaluate("4+8+9"));
         assertEquals(28, ExpressionEvaluator.evaluate("1+2+3+4+5+6+7"));
@@ -70,7 +70,7 @@ public class EvaluatorTest {
     @DisplayName("WHEN an expression contains both addition and multiplication but no "
             + "parentheses, THEN the order of operations is respected.")
     @Test
-    public void testBothOperators() {
+    public void testBothOperators() throws MalformedExpressionException{
         assertEquals(7, ExpressionEvaluator.evaluate("1+2*3"));
         assertEquals(5, ExpressionEvaluator.evaluate("1*2+3"));
         assertEquals(15, ExpressionEvaluator.evaluate("1+2+3*4"));
@@ -83,7 +83,7 @@ public class EvaluatorTest {
     @DisplayName("WHEN an expression contains both addition and multiplication and "
             + "non-nested parentheses, THEN the order of operations is respected.")
     @Test
-    public void testBothOperatorsParentheses() {
+    public void testBothOperatorsParentheses() throws MalformedExpressionException{
         assertEquals(14, ExpressionEvaluator.evaluate("2+(3*4)"));
         assertEquals(20, ExpressionEvaluator.evaluate("(2+3)*4"));
         assertEquals(10, ExpressionEvaluator.evaluate("(2*3)+4"));
@@ -95,7 +95,7 @@ public class EvaluatorTest {
     @DisplayName("WHEN an expression contains both addition and multiplication and "
             + "nested parentheses, THEN the order of operations is respected.")
     @Test
-    public void testBothOperatorsNestedParentheses() {
+    public void testBothOperatorsNestedParentheses() throws MalformedExpressionException{
         assertEquals(94, ExpressionEvaluator.evaluate("2*(3+4*(5+6))"));
     }
 
@@ -103,7 +103,7 @@ public class EvaluatorTest {
             + "expression is evaluated correctly")
     @Test
 
-    public void testMultiDigitEvaluation(){
+    public void testMultiDigitEvaluation() throws MalformedExpressionException{
         //Basic operations
         assertEquals(31 , ExpressionEvaluator.evaluate("26+5"));
         assertEquals(31 , ExpressionEvaluator.evaluate("5+26"));

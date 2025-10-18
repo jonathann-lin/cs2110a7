@@ -10,8 +10,10 @@ public class ExpressionEvaluator {
      * Evaluates the given well-formed mathematical expression `expr` and returns its value.
      * Currently, the `evaluate()` method supports: - Multi-digit int literals - Addition -
      * Multiplication - Parentheses
+     *
+     * Throws a MalformedExpressionException if the given expression is malformed.
      */
-    public static int evaluate(String expr) {
+    public static int evaluate(String expr) throws MalformedExpressionException{
         Stack<Integer> operands = new LinkedStack<>();
         Stack<Character> operators = new LinkedStack<>(); // invariant: contains only '(', '+', and '*'
 
@@ -20,11 +22,15 @@ public class ExpressionEvaluator {
 
         for (char c : expr.toCharArray()) { // arrays are Iterable, so can be used in enhanced-for loops
             if (c == '(') {
-                assert !expectingOperator : "'(' cannot follow an operand";
+                if (expectingOperator){
+                    throw new MalformedExpressionException("'(' cannot follow an operand");
+                }
                 operators.push('(');
                 canContinueNumber = false;
             } else if (c == '*') {
-                assert expectingOperator : "'*' must follow an operand, not an operator";
+                if (!expectingOperator){
+                    throw new MalformedExpressionException("'*' must follow an operand, not an operator");
+                }
                 while (!operators.isEmpty() && operators.peek() == '*') {
                     oneStepSimplify(operands, operators);
                 }
@@ -32,7 +38,9 @@ public class ExpressionEvaluator {
                 expectingOperator = false;
                 canContinueNumber = false;
             } else if (c == '+') {
-                assert expectingOperator : "'+' must follow an operand, not an operator";
+                if (!expectingOperator){
+                    throw new MalformedExpressionException("'+' must follow an operand, not an operator");
+                }
                 while (!operators.isEmpty() && (operators.peek() == '*'
                         || operators.peek() == '+')) {
                     oneStepSimplify(operands, operators);
@@ -41,18 +49,28 @@ public class ExpressionEvaluator {
                 expectingOperator = false;
                 canContinueNumber = false;
             } else if (c == ')') {
-                assert expectingOperator : "')' must follow an operand, not an operator";
+                if (!expectingOperator){
+                    throw new MalformedExpressionException("')' must follow an operand, not an operator");
+                }
                 assert !operators.isEmpty() : "mismatched parentheses, extra ')'";
+                if (operators.isEmpty()){
+                    throw new MalformedExpressionException("mismatched parentheses, extra ')'");
+                }
                 while (operators.peek() != '(') {
                     oneStepSimplify(operands, operators);
-                    assert !operators.isEmpty() : "mismatched parentheses, extra ')'";
+                    if (operators.isEmpty()){
+                        throw new MalformedExpressionException("mismatched parentheses, extra ')'");
+                    }
                 }
                 operators.pop(); // remove '('
                 canContinueNumber = false;
             } else { // c is a digit
-                assert c >= '0' && c <= '9' : "expression contains an illegal character";
-                assert !expectingOperator
-                        || canContinueNumber : "Can not be expecting an operator, (expecting operand) unless we are continuing from a previous number";
+                if (!(c >= '0' && c <= '9')){
+                    throw new MalformedExpressionException("expression contains an illegal character");
+                }
+                if(expectingOperator && !canContinueNumber){
+                    throw new MalformedExpressionException("Unexpected digit not after operator or multi-digit integer");
+                }
                 if (canContinueNumber) { //extending from previous number
                     int prev = operands.pop();
                     operands.push(prev * 10 + (c - '0'));
@@ -64,14 +82,19 @@ public class ExpressionEvaluator {
             }
         }
 
-        assert expectingOperator : "expression must end with an operand, not an operator";
+        if(!expectingOperator){
+            throw new MalformedExpressionException("expression must end with an operand, not an operator");
+        }
         while (!operators.isEmpty()) {
-            assert operators.peek() != '(' : "mismatched parentheses, extra '('";
+            if(operators.peek() == '('){
+                throw new MalformedExpressionException("mismatched parentheses, extra '('");
+            }
             oneStepSimplify(operands, operators);
         }
 
         // If the above assertions pass, the operands stack should include exactly one value,
         // the return value. We'll include two assertions to verify this as a sanity check.
+        //TODO check if these should be throw statements?
         assert !operands.isEmpty();
         int result = operands.pop();
         assert operands.isEmpty();
@@ -105,7 +128,13 @@ public class ExpressionEvaluator {
                 if (expr.equals("q")) {
                     break; // exit loop
                 }
-                System.out.println("= " + evaluate(expr));
+                try {
+                    System.out.println("= " + evaluate(expr));
+                }
+                catch (MalformedExpressionException malformedException){
+                    System.out.println("Error: " + malformedException.getMessage());
+                }
+
             }
         }
     }
