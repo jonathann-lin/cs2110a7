@@ -198,6 +198,27 @@ public class EvaluatorTest {
         assertEquals(30, ExpressionEvaluator.evaluate(" (  2 +  3  ) *  (  4 + 2  )  "));
     }
 
+    @DisplayName("WHEN an input uses unary negation, THEN the expression is evaluated correctly")
+    @Test
+    public void testUnaryNegation() throws MalformedExpressionException {
+        assertEquals(-5, ExpressionEvaluator.evaluate("-5"));
+        assertEquals(-5, ExpressionEvaluator.evaluate("-(3+2)"));
+        assertEquals(5, ExpressionEvaluator.evaluate("--5"));
+        assertEquals(-5, ExpressionEvaluator.evaluate("---5"));
+        assertEquals(-5, ExpressionEvaluator.evaluate(" - ( 3 + 2 ) "));
+        assertEquals(5, ExpressionEvaluator.evaluate(" -(-5) "));
+        assertEquals(0, ExpressionEvaluator.evaluate("-5 + 2 + 3"));
+        assertEquals(15, ExpressionEvaluator.evaluate("-(3+2)*(-4)+(-5)"));
+        assertEquals(-15, ExpressionEvaluator.evaluate("-( -3 + -2 ) * (-2 + -1)"));
+        assertEquals(10, ExpressionEvaluator.evaluate("--(2+3)*2"));
+        assertEquals(-35, ExpressionEvaluator.evaluate("-(5*(3+4))"));
+        assertEquals(-4, ExpressionEvaluator.evaluate(" - ( 2 * 2 ) "));
+        assertEquals(9, ExpressionEvaluator.evaluate("-(-3 * 3)"));
+        assertEquals(14, ExpressionEvaluator.evaluate("20 + -(3) + -(3) + 0"));
+        assertEquals(-7, ExpressionEvaluator.evaluate("-(2 + 5)"));
+
+    }
+
 
 
 
