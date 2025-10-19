@@ -77,8 +77,8 @@ public class ExpressionEvaluator {
                     expectingOperator = false;
                     canContinueNumber = false;
                 } else { // Otherwise just subtraction
-                    while (!operators.isEmpty() && operators.peek() == '*'
-                            || operators.peek() == '+' || operators.peek() == '-'){
+                    while (!operators.isEmpty() && (operators.peek() == '*'
+                            || operators.peek() == '+' || operators.peek() == '-')){
                         oneStepSimplify(operands, operators);
                     }
                     operators.push('-');
