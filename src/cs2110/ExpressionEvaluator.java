@@ -75,14 +75,13 @@ public class ExpressionEvaluator {
                     }
                     operators.push('*');
                     operands.push(-1);
-                    expectingOperator = false;
-                    canContinueNumber = false;
                 } else { // Otherwise just subtraction
                     while (!operators.isEmpty() && (operators.peek() == '*'
                             || operators.peek() == '+' || operators.peek() == '-')){
                         oneStepSimplify(operands, operators);
                     }
                     operators.push('-');
+                    expectingOperator=false;
                 }
 
             } else if (Character.isWhitespace(c)) {
@@ -137,6 +136,7 @@ public class ExpressionEvaluator {
         assert op == '+' || op == '*' || op == '-';
 
         int o2 = operands.pop(); // second operand is higher on stack
+        System.out.println(o2);
         int o1 = operands.pop();
         if (op == '+'){ // case of +
             operands.push(o1 + o2);
