@@ -143,9 +143,9 @@ public class EvaluatorTest {
         assertEquals(14, ExpressionEvaluator.evaluate("1* 2+3*4"));
         assertEquals(25, ExpressionEvaluator.evaluate("1 +2         *3*4"));
         assertEquals(10, ExpressionEvaluator.evaluate("1*2*3+4       "));
-        assertEquals(14, ExpressionEvaluator.evaluate("2+(3*4)"));
+        assertEquals(14, ExpressionEvaluator.evaluate("2+(3 *4)"));
         assertEquals(20, ExpressionEvaluator.evaluate("     (2+3)*4"));
-        assertEquals(10, ExpressionEvaluator.evaluate("(2*3)+4 "));
+        assertEquals(10, ExpressionEvaluator.evaluate("(2*3 )+4 "));
         assertEquals(14, ExpressionEvaluator.evaluate("2*(3+   4)"));
         assertEquals(45, ExpressionEvaluator.evaluate(" ( 2 + 3  )*  ( 4 + 5  ) "));
         assertEquals(70, ExpressionEvaluator.evaluate("2* (3+4)   *5"));
@@ -164,7 +164,7 @@ public class EvaluatorTest {
         assertThrows(MalformedExpressionException.class, ()->ExpressionEvaluator.evaluate("1  0 0+ ( 23)"));
         assertThrows(MalformedExpressionException.class, () ->ExpressionEvaluator.evaluate("(15*1 5)"));
         assertThrows(MalformedExpressionException.class, ()->ExpressionEvaluator.evaluate("(12*11)+(1 2)"));
-        assertThrows(MalformedExpressionException.class,()-> ExpressionEvaluator.evaluate("(12+8  )*(10  +2)"));
+        assertThrows(MalformedExpressionException.class,()-> ExpressionEvaluator.evaluate("(1 2+8  )*(10  +2)"));
         assertThrows(MalformedExpressionException.class, ()->ExpressionEvaluator.evaluate("( 1 6 6 +  (19*  56)+(2  6*6  ))+(  (5 * 2       *41  + 52 5 ) + 5 * 5 )*  20 1 "));
     }
 
