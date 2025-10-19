@@ -25,6 +25,7 @@ public class ExpressionEvaluator {
             if (c == '(') {
                 if (expectingOperator) {
                     operators.push('*');
+                    expectingOperator = false;
                     //throw new MalformedExpressionException("'(' cannot follow an operand");
                 }
                 operators.push('(');

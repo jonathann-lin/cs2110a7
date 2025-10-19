@@ -219,6 +219,23 @@ public class EvaluatorTest {
 
     }
 
+    @DisplayName("WHEN an input uses implicit multiplication, THEN the expression is evaluated correctly")
+    @Test
+    public void testImplicitMultiplication() throws MalformedExpressionException {
+        assertEquals(10, ExpressionEvaluator.evaluate("(2)(5)"));
+        assertEquals(25, ExpressionEvaluator.evaluate("(2+3)5"));
+        assertEquals(25, ExpressionEvaluator.evaluate("5(2+3)"));
+        assertEquals(10, ExpressionEvaluator.evaluate(" ( 2 ) ( 5 ) "));
+        assertEquals(25, ExpressionEvaluator.evaluate(" ( 2 + 3 ) 5 "));
+        assertEquals(25, ExpressionEvaluator.evaluate(" 5 ( 2 + 3 ) "));
+        assertEquals(-10, ExpressionEvaluator.evaluate("-(2)(5)"));
+        assertEquals(-25, ExpressionEvaluator.evaluate("-(2+3)5"));
+        assertEquals(-25, ExpressionEvaluator.evaluate("-5(2+3)"));
+        assertEquals(-5, ExpressionEvaluator.evaluate("-(3+2)"));
+        assertEquals(1, ExpressionEvaluator.evaluate("5-(2)(2)"));
+
+    }
+
 
 
 
