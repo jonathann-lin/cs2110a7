@@ -23,8 +23,8 @@ public class ExpressionEvaluator {
         for (char c : expr.toCharArray()) { // arrays are Iterable, so can be used in enhanced-for loops
             if (c == '(') {
                 if (expectingOperator) {
-                    //operators.push('*');
-                    throw new MalformedExpressionException("'(' cannot follow an operand");
+                    operators.push('*');
+                    //throw new MalformedExpressionException("'(' cannot follow an operand");
                 }
                 operators.push('(');
                 canContinueNumber = false;
@@ -70,9 +70,6 @@ public class ExpressionEvaluator {
                 canContinueNumber = false;
             } else if (c == '-') {
                 if (!expectingOperator) { // Case of unary: treat like multiplication by -1
-                    while (!operators.isEmpty() && operators.peek() == '*') {
-                        oneStepSimplify(operands, operators);
-                    }
                     operators.push('*');
                     operands.push(-1);
                 } else { // Otherwise just subtraction
@@ -82,6 +79,7 @@ public class ExpressionEvaluator {
                     }
                     operators.push('-');
                     expectingOperator=false;
+                    canContinueNumber=false;
                 }
 
             } else if (Character.isWhitespace(c)) {
@@ -136,7 +134,6 @@ public class ExpressionEvaluator {
         assert op == '+' || op == '*' || op == '-';
 
         int o2 = operands.pop(); // second operand is higher on stack
-        System.out.println(o2);
         int o1 = operands.pop();
         if (op == '+'){ // case of +
             operands.push(o1 + o2);
