@@ -9,7 +9,7 @@ public class ExpressionEvaluator {
     /**
      * Evaluates the given well-formed mathematical expression `expr` and returns its value.
      * Currently, the `evaluate()` method supports: - Multi-digit int literals - Addition -
-     * Multiplication - Parentheses
+     * Multiplication - Parentheses - Supports whitespace handling
      *
      * Throws a MalformedExpressionException if the given expression is malformed.
      */
@@ -64,7 +64,11 @@ public class ExpressionEvaluator {
                 }
                 operators.pop(); // remove '('
                 canContinueNumber = false;
-            } else { // c is a digit
+            }
+            else if (Character.isWhitespace(c)){
+                    canContinueNumber = false; //ensure that additional digits of a multi-digit integer are not allowed after whitespace.
+            }
+            else { // c is a digit
                 if (!(c >= '0' && c <= '9')){
                     throw new MalformedExpressionException("expression contains an illegal character");
                 }
