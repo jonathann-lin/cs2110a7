@@ -132,7 +132,7 @@ public class EvaluatorTest {
 
     }
 
-    @DisplayName("WHEN an expression contains white space, THEN the expression "
+    @DisplayName("WHEN an expression contains valid white space, THEN the expression "
             + "still evaluates properly")
     @Test
     public void testWhitespaceTrue() throws MalformedExpressionException{
@@ -166,6 +166,38 @@ public class EvaluatorTest {
         assertThrows(MalformedExpressionException.class,()-> ExpressionEvaluator.evaluate("(1 2+8  )*(10  +2)"));
         assertThrows(MalformedExpressionException.class, ()->ExpressionEvaluator.evaluate("( 1 6 6 +  (19*  56)+(2  6*6  ))+(  (5 * 2       *41  + 52 5 ) + 5 * 5 )*  20 1 "));
     }
+
+    @DisplayName("WHEN an input uses subtraction, THEN the expression is evaluated correctly")
+    @Test
+    public void testBinarySubtraction() throws MalformedExpressionException{
+        assertEquals(3, ExpressionEvaluator.evaluate("5-2"));
+        assertEquals(9, ExpressionEvaluator.evaluate("15-(3*2)"));
+        assertEquals(7, ExpressionEvaluator.evaluate("(10-3)"));
+        assertEquals(5, ExpressionEvaluator.evaluate("(8-3)+0"));
+        assertEquals(10, ExpressionEvaluator.evaluate("20-(3*2)-4"));
+        assertEquals(6, ExpressionEvaluator.evaluate("(10-4)"));
+        assertEquals(8, ExpressionEvaluator.evaluate("2+(3*2)-0"));
+        assertEquals(2, ExpressionEvaluator.evaluate("(10-4)-4"));
+        assertEquals(25, ExpressionEvaluator.evaluate("(2+3)*(6-1)"));
+        assertEquals(30, ExpressionEvaluator.evaluate("(10*3)-0"));
+        assertEquals(4, ExpressionEvaluator.evaluate("(10-6)"));
+        assertEquals(18, ExpressionEvaluator.evaluate("(4+5)*2"));
+        assertEquals(21, ExpressionEvaluator.evaluate("(5*(6-3))+6"));
+        assertEquals(2, ExpressionEvaluator.evaluate("(20-4*4)-2"));
+        assertEquals(17, ExpressionEvaluator.evaluate("(25-(6*2))+(4-0)"));
+
+        //test whitespace handling with subtraction
+        assertEquals(12, ExpressionEvaluator.evaluate("  6  *  2  "));
+        assertEquals(9, ExpressionEvaluator.evaluate(" (  3  +  6 ) "));
+        assertEquals(15, ExpressionEvaluator.evaluate("  ( 5  *  (  4  -  1 )  )  "));
+        assertEquals(8, ExpressionEvaluator.evaluate("  20  -   ( 6 + 6 )  "));
+        assertEquals(14, ExpressionEvaluator.evaluate(" (  2 +  5 )  +  (  3  + 4 ) "));
+        assertEquals(16, ExpressionEvaluator.evaluate(" (  8 *  2 )   -  0 "));
+        assertEquals(18, ExpressionEvaluator.evaluate(" (  10  +  2  )  +   6  "));
+        assertEquals(5, ExpressionEvaluator.evaluate("  10  -   3  -   2  "));
+        assertEquals(30, ExpressionEvaluator.evaluate(" (  2 +  3  ) *  (  4 + 2  )  "));
+    }
+
 
 
 
