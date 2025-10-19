@@ -132,6 +132,42 @@ public class EvaluatorTest {
 
     }
 
+    @DisplayName("WHEN an expression contains white space, THEN the expression "
+            + "still evaluates properly")
+    @Test
+    public void testWhitespaceTrue() throws MalformedExpressionException{
+        assertEquals(7, ExpressionEvaluator.evaluate("1      +2*  3   "));
+        assertEquals(5, ExpressionEvaluator.evaluate("1*2 +3"));
+        assertEquals(15, ExpressionEvaluator.evaluate(" 1 + 2 + 3 * 4 "));
+        assertEquals(11, ExpressionEvaluator.evaluate("1  +2 * 3+ 4"));
+        assertEquals(14, ExpressionEvaluator.evaluate("1* 2+3*4"));
+        assertEquals(25, ExpressionEvaluator.evaluate("1 +2         *3*4"));
+        assertEquals(10, ExpressionEvaluator.evaluate("1*2*3+4       "));
+        assertEquals(14, ExpressionEvaluator.evaluate("2+(3*4)"));
+        assertEquals(20, ExpressionEvaluator.evaluate("     (2+3)*4"));
+        assertEquals(10, ExpressionEvaluator.evaluate("(2*3)+4 "));
+        assertEquals(14, ExpressionEvaluator.evaluate("2*(3+   4)"));
+        assertEquals(45, ExpressionEvaluator.evaluate(" ( 2 + 3  )*  ( 4 + 5  ) "));
+        assertEquals(70, ExpressionEvaluator.evaluate("2* (3+4)   *5"));
+        assertEquals(72, ExpressionEvaluator.evaluate("(6*6)+( 6* 6)"));
+        assertEquals(99, ExpressionEvaluator.evaluate("(50+49) "));
+
+    }
+
+    @DisplayName("WHEN an inpute has an invalid whitespace input, THEN throw a "
+            + "MalformedExpressionException")
+
+    @Test
+    public void testWhitespaceFalse() throws MalformedExpressionException{
+        assertThrows(MalformedExpressionException.class, () -> ExpressionEvaluator.evaluate("(8+ 2   4)*(4  +1)"));
+        assertThrows(MalformedExpressionException.class,() -> ExpressionEvaluator.evaluate("2*((1 0+ 5)*7)"));
+        assertThrows(MalformedExpressionException.class, ()->ExpressionEvaluator.evaluate("1  0 0+ ( 23)"));
+        assertThrows(MalformedExpressionExceptio
+                n.class, () ->ExpressionEvaluator.evaluate("(15*1 5)"));
+        assertThrows(MalformedExpressionException.class, ()->ExpressionEvaluator.evaluate("(12*11)+(1 2)"));
+        assertThrows(MalformedExpressionException.class,()-> ExpressionEvaluator.evaluate("(12+8  )*(10  +2)"));
+        assertThrows(MalformedExpressionException.class, ()->ExpressionEvaluator.evaluate("( 1 6 6 +  (19*  56)+(2  6*6  ))+(  (5 * 2       *41  + 52 5 ) + 5 * 5 )*  20 1 "));
+    }
 
 
     // TODO: Add unit testing for all of the features that you add to the ExpressionEvaluator
