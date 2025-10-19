@@ -18,6 +18,7 @@ public class ExpressionEvaluator {
         Stack<Integer> operands = new LinkedStack<>();
         Stack<Character> operators = new LinkedStack<>(); // invariant: contains only '(', '+', and '*'
 
+        boolean closingParenthesis = false; // will allow us to track if there's a closing parenthesis for implict multiplication
         boolean expectingOperator = false; // in infix notation, the first operand comes before an operator
         boolean canContinueNumber = false; //records whether there is a previous number that can be extended to multiple digits
 
@@ -30,6 +31,7 @@ public class ExpressionEvaluator {
                 }
                 operators.push('(');
                 canContinueNumber = false;
+                closingParenthesis = false;
             } else if (c == '*') {
                 if (!expectingOperator) {
                     throw new MalformedExpressionException(
@@ -41,6 +43,8 @@ public class ExpressionEvaluator {
                 operators.push('*');
                 expectingOperator = false;
                 canContinueNumber = false;
+                closingParenthesis = false;
+
             } else if (c == '+') {
                 if (!expectingOperator) {
                     throw new MalformedExpressionException(
@@ -53,6 +57,8 @@ public class ExpressionEvaluator {
                 operators.push('+');
                 expectingOperator = false;
                 canContinueNumber = false;
+                closingParenthesis = false;
+
             } else if (c == ')') {
                 if (!expectingOperator) {
                     throw new MalformedExpressionException(
@@ -69,6 +75,7 @@ public class ExpressionEvaluator {
                     }
                 }
                 operators.pop(); // remove '('
+                closingParenthesis=true;
                 canContinueNumber = false;
             } else if (c == '-') {
                 if (!expectingOperator) { // Case of unary: treat like multiplication by -1
@@ -82,6 +89,8 @@ public class ExpressionEvaluator {
                     operators.push('-');
                     expectingOperator=false;
                     canContinueNumber=false;
+                    closingParenthesis = false;
+
                 }
 
             } else if (Character.isWhitespace(c)) {
@@ -90,6 +99,11 @@ public class ExpressionEvaluator {
                 if (!(c >= '0' && c <= '9')) {
                     throw new MalformedExpressionException(
                             "expression contains an illegal character");
+                }
+                if (closingParenthesis){
+                    operators.push('*');
+                    expectingOperator=false;
+                    closingParenthesis=false;
                 }
                 if (expectingOperator && !canContinueNumber) {
                     throw new MalformedExpressionException(
@@ -100,6 +114,7 @@ public class ExpressionEvaluator {
                     operands.push(prev * 10 + (c - '0'));
                 } else { //starting new number
                     operands.push(c - '0'); // convert c to an int and auto-box
+
                 }
                 expectingOperator = true;
                 canContinueNumber = true;
