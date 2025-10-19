@@ -9,7 +9,8 @@ public class ExpressionEvaluator {
     /**
      * Evaluates the given well-formed mathematical expression `expr` and returns its value.
      * Currently, the `evaluate()` method supports: - Multi-digit int literals - Addition -
-     * Multiplication - Parentheses - Supports whitespace handling
+     * Multiplication - Parentheses - Whitespace handling - Subtraction - Unary negation -
+     * Implict multiplication
      * <p>
      * Throws a MalformedExpressionException if the given expression is malformed.
      */
