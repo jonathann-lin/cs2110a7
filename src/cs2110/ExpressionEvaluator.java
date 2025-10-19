@@ -94,7 +94,6 @@ public class ExpressionEvaluator {
 
         // If the above assertions pass, the operands stack should include exactly one value,
         // the return value. We'll include two assertions to verify this as a sanity check.
-        //TODO check if these should be throw statements?
         assert !operands.isEmpty();
         int result = operands.pop();
         assert operands.isEmpty();
