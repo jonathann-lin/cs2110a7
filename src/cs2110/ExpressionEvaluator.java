@@ -23,6 +23,7 @@ public class ExpressionEvaluator {
         for (char c : expr.toCharArray()) { // arrays are Iterable, so can be used in enhanced-for loops
             if (c == '(') {
                 if (expectingOperator) {
+                    //operators.push('*');
                     throw new MalformedExpressionException("'(' cannot follow an operand");
                 }
                 operators.push('(');
