@@ -154,9 +154,8 @@ public class EvaluatorTest {
 
     }
 
-    @DisplayName("WHEN an inpute has an invalid whitespace input, THEN throw a "
+    @DisplayName("WHEN an input has an invalid whitespace input, THEN throw a "
             + "MalformedExpressionException")
-
     @Test
     public void testWhitespaceFalse() throws MalformedExpressionException{
         assertThrows(MalformedExpressionException.class, () -> ExpressionEvaluator.evaluate("(8+ 2   4)*(4  +1)"));
