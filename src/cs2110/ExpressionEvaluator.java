@@ -4,8 +4,6 @@ import java.util.Scanner;
 
 public class ExpressionEvaluator {
 
-    // TODO: Update these specs as you build out the functionality of the `evaluate()` method.
-
     /**
      * Evaluates the given well-formed mathematical expression `expr` and returns its value.
      * Currently, the `evaluate()` method supports: - Multi-digit int literals - Addition -
