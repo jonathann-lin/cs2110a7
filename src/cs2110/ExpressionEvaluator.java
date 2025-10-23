@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 public class ExpressionEvaluator {
 
-    // TODO: Update these specs as you build out the functionality of the `evaluate()` method.
 
     /**
      * Evaluates the given well-formed mathematical expression `expr` and returns its value.
@@ -13,6 +12,9 @@ public class ExpressionEvaluator {
      * Implict multiplication
      * <p>
      * Throws a MalformedExpressionException if the given expression is malformed.
+     * Malformed expressions include when parenthesis are mismatched, invalid character, operator in wrong
+     * position, trailing operator, whitespace between digits.
+     *
      */
     public static int evaluate(String expr) throws MalformedExpressionException {
         Stack<Integer> operands = new LinkedStack<>();
@@ -35,7 +37,7 @@ public class ExpressionEvaluator {
             } else if (c == '*') {
                 if (!expectingOperator) {
                     throw new MalformedExpressionException(
-                            "'*' must follow an operand, not an operator");
+                            "'*' is not allowed in that position");
                 }
                 while (!operators.isEmpty() && operators.peek() == '*') {
                     oneStepSimplify(operands, operators);
@@ -48,7 +50,7 @@ public class ExpressionEvaluator {
             } else if (c == '+') {
                 if (!expectingOperator) {
                     throw new MalformedExpressionException(
-                            "'+' must follow an operand, not an operator");
+                            "'+' is not allowed in that position");
                 }
                 while (!operators.isEmpty() && (operators.peek() == '*'
                         || operators.peek() == '+' || operators.peek() == '-')) {
@@ -62,7 +64,7 @@ public class ExpressionEvaluator {
             } else if (c == ')') {
                 if (!expectingOperator) {
                     throw new MalformedExpressionException(
-                            "')' must follow an operand, not an operator");
+                            "')' is not allowed in that position");
                 }
                 assert !operators.isEmpty() : "mismatched parentheses, extra ')'";
                 if (operators.isEmpty()) {
